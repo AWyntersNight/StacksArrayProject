@@ -6,117 +6,144 @@ using namespace std;
 //Alexandra Gutierrez & Wynter Horrigan
 
 //Checking if stack is empty
-bool empty(stack<int>& numbers)
+bool empty(int topNum)
+{
+    if (topNum == -1)
     {
-    return numbers.empty();
+        return true;
     }
+    else
+    {
+        return false;
+    }
+}
+
+//Checking if stack is full
+bool full(int topNum)
+{
+    if (topNum == 4)
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
 
 //Function to push a number to the stack
-void push(stack<int>& numbers)
+void push(int& stack, int& topNum)
 {
     int temp;
-    cout << "Enter a number between 0 and 99:" << endl;
-    cin >> temp;
-    
-    if (temp >= 0 && temp <= 99)
+    if (full(topNum))
     {
-        numbers.push(temp);
+        cout << "Error: Overflow. Stack is full." << endl;
     }
-    else 
+    else
     {
-        cout << "Input invalid. Please enter a number between 0 and 99." << endl;
+        cout << "Enter a number between 0 and 99" << endl << endl;
+        cin >> temp;
+        if (temp >= 0 && temp <= 99)
+        {
+            topNum++;
+            stack = temp;
+        }
+        else
+        {
+            cout << "Invalid input" << endl;
+        }
     }
 }
 
 //Function to pop a number from the stack
-void pop(stack<int>& numbers)
+void pop(int& stack, int& topNum)
 {
-    if (empty(numbers))
+    if (empty(topNum))
     {
         cout << "Error: Underflow. Stack is empty." << endl;
     }
     else
     {
-        numbers.pop();
+        cout << stack << " is popped" << endl;
+        topNum--;
     }
 }
 
 //Function to output the top element of the stack
-void top(stack<int>& numbers)
+void top(int& stack, int& topNum)
 {
-    if (empty(numbers))
+    if (empty(topNum))
     {
-        cout << "Error, stack is empty." << endl;
+        cout << "Error: Underflow. Stack is empty" << endl;
     }
     else
     {
-        cout << "Top of stack: " << numbers.top() << endl;
+        cout << stack << " is the top of the stack" << endl;
     }
 }
 
 //Function to purge the stack (clear all elements)
-void purge(stack<int>& numbers)
+void purge(int& topNum)
 {
-    while (!empty(numbers))
+    if (empty(topNum))
     {
-        numbers.pop();
+        cout << "Error: Underflow. Stack is empty" << endl;
     }
-    cout << "Stack is now empty." << endl;
+    else
+    {
+        cout << "Stack purged" << endl;
+        topNum = -1;
+    }
 }
 
-//Function to search for an element in the array (for menu options)
-int searchArray(string array[], int size, string element)
+int main() 
 {
-    for (int i = 0; i < size; i++)
-    {
-        if (array[i] == element)
-        {
-            return i;
-        }
-    }
-    return -1;
-}
-
-int main() {
-    stack<int> numbers;
-    string myArray[] = {"A", "B", "C", "D", "E"};
-    int size = sizeof(myArray) / sizeof(myArray[0]);
-    int index;
+    int stack[] = {0, 0, 0, 0, 0};
+    int topNum = -1;
+    int temp;
     string myChoice;
 
     while (true) {
+        temp = topNum + 1;
         //Menu
-        cout << "\nStack Menu Prompt" << endl;
+        cout << "\nStack Menu Prompt" << endl << endl;
         cout << "Type A to push a number to the stack" << endl;
         cout << "Type B to pop a number from the stack" << endl;
         cout << "Type C to output the top of the stack" << endl;
-        cout << "Type D to purge the stack" << endl;
+        cout << "Type D to purge the stack" << endl << endl;
         //Input from user for the Menu
         cin >> myChoice;
-
-        index = searchArray(myArray, size, myChoice);
+        cout << endl;
 
         //Output actions based on user input
-        if (index == 0)
+        if (myChoice == "A")
         {
-            push(numbers);
+            push(stack[temp], topNum);
         }
-        else if (index == 1)
+        else if (myChoice == "B")
         {
-            pop(numbers);
+            pop(stack[topNum], topNum);
         }
-        else if (index == 2)
+        else if (myChoice == "C")
         {
-            top(numbers);
+            top(stack[topNum], topNum);
         }
-        else if (index == 3)
+        else if (myChoice == "D")
         {
-            purge(numbers);
+            purge(topNum);
         }
         else
         {
             cout << "Invalid choice. Please try again." << endl;
         }
+        
+        //Output contents of the stack
+        cout << "Items on the stack: ";
+        for (int i = 0; i <= topNum; i++)
+        {
+            cout << stack[i] << " ";
+        }
+        cout << endl;
     }
 
     return 0;
